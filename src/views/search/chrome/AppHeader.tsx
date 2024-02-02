@@ -8,7 +8,7 @@ import {
   VuiTextColor,
   VuiButtonTertiary,
   VuiText,
-  VuiButtonPrimary,
+  // VuiButtonPrimary,
 } from "../../../ui";
 import "./appHeader.scss";
 
@@ -89,7 +89,7 @@ export const AppHeader = () => {
             )}
 
             <VuiFlexItem>
-              <VuiButtonPrimary
+              {/* <VuiButtonPrimary
                 color="primary"
                 size="m"
                 href="https://console.vectara.com/"
@@ -103,7 +103,7 @@ export const AppHeader = () => {
                 }}
               >
                 Try Vectara now
-              </VuiButtonPrimary>
+              </VuiButtonPrimary> */}
             </VuiFlexItem>
           </VuiFlexContainer>
         </VuiFlexItem>

@@ -9,7 +9,7 @@ import { SearchControls } from "./controls/SearchControls";
 import { ExampleQuestions } from "./controls/ExampleQuestions";
 import { useSearchContext } from "../../contexts/SearchContext";
 import { AppHeader } from "./chrome/AppHeader";
-import { AppFooter } from "./chrome/AppFooter";
+// import { AppFooter } from "./chrome/AppFooter";
 import { useConfigContext } from "../../contexts/ConfigurationContext";
 import { SearchUx } from "./SearchUx";
 import { SummaryUx } from "./SummaryUx";
@@ -81,7 +81,7 @@ export const SearchView = () => {
           {content}
         </VuiFlexItem>
 
-        {app.isFooterEnabled && <AppFooter />}
+        {/* {app.isFooterEnabled && <AppFooter />} */}
       </VuiFlexContainer>
     </>
   );

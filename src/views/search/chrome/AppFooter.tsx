@@ -5,7 +5,7 @@ import {
   VuiText,
   VuiLink,
   VuiSpacer,
-  VuiButtonPrimary,
+  // VuiButtonPrimary,
 } from "../../../ui";
 import "./appFooter.scss";
 
@@ -36,7 +36,7 @@ export const AppFooter = () => {
 
             <VuiSpacer size="m" />
 
-            <div>
+            {/* <div>
               <VuiButtonPrimary
                 color="accent"
                 size="m"
@@ -45,7 +45,7 @@ export const AppFooter = () => {
               >
                 Try Vectara now
               </VuiButtonPrimary>
-            </div>
+            </div> */}
           </VuiFlexItem>
 
           <VuiFlexItem grow={5}>
