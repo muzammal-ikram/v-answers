@@ -29,10 +29,10 @@ export const deserializeSearchResponse = (
 
   responses.forEach((response) => {
     const { documentIndex, text: rawText } = response;
-    const { pre, post, text } = parseSnippet(rawText);
+    const { pre, post, text , title } = parseSnippet(rawText);
     const document = documents[Number(documentIndex)];
     const { id, metadata: rawMetadata } = document;
-    const { source, url, title, metadata } = parseMetadata(rawMetadata);
+    const { source, url, metadata } = parseMetadata(rawMetadata);
 
     results.push({
       id,
