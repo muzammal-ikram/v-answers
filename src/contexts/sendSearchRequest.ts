@@ -21,6 +21,7 @@ type Config = {
   corpusId: string;
   endpoint: string;
   apiKey: string;
+  startValue: number;
 };
 
 export const sendSearchRequest = async ({
@@ -42,6 +43,7 @@ export const sendSearchRequest = async ({
   corpusId,
   endpoint,
   apiKey,
+  startValue
 }: Config) => {
   const lambda =
     typeof query_str === "undefined" || query_str.trim().split(" ").length > hybridNumWords
@@ -62,7 +64,7 @@ export const sendSearchRequest = async ({
     query: [
       {
         query: query_str,
-        start: 0,
+        start: startValue,
         numResults: rerank ? rerankNumResults : 10,
         corpusKey: corpusKeyList,
         contextConfig: {

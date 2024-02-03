@@ -27,6 +27,10 @@ import { deserializeSearchResponse } from "../utils/deserializeSearchResponse";
 interface SearchContextType {
   filterValue: string;
   setFilterValue: (source: string) => void;
+  currentIndex: number;
+  setCurrentIndex: any;
+  startValue: number;
+  setStartValue: any;
   searchValue: string;
   setSearchValue: (value: string) => void;
   onSearch: ({
@@ -34,11 +38,13 @@ interface SearchContextType {
     filter,
     language,
     isPersistable,
+    startValue
   }: {
     value?: string;
     filter?: string;
     language?: SummaryLanguage;
     isPersistable?: boolean;
+    startValue?: number
   }) => void;
   reset: () => void;
   isSearching: boolean;
@@ -83,6 +89,8 @@ export const SearchContextProvider = ({ children }: Props) => {
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [filterValue, setFilterValue] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [startValue, setStartValue] = useState(0);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -181,11 +189,13 @@ export const SearchContextProvider = ({ children }: Props) => {
     filter = filterValue,
     language = getLanguage(),
     isPersistable = true,
+    startValue = 0
   }: {
     value?: string;
     filter?: string;
     language?: SummaryLanguage;
     isPersistable?: boolean;
+    startValue?: number
   }) => {
     const searchId = ++searchCount;
 
@@ -232,6 +242,7 @@ export const SearchContextProvider = ({ children }: Props) => {
           corpusId: search.corpusId!,
           endpoint: search.endpoint!,
           apiKey: search.apiKey!,
+          startValue: startValue,
         });
         const totalTime = Date.now() - startTime;
 
@@ -281,6 +292,7 @@ export const SearchContextProvider = ({ children }: Props) => {
               corpusId: search.corpusId!,
               endpoint: search.endpoint!,
               apiKey: search.apiKey!,
+              startValue: startValue,
             });
             const totalTime = Date.now() - startTime;
 
@@ -328,6 +340,10 @@ export const SearchContextProvider = ({ children }: Props) => {
       value={{
         filterValue,
         setFilterValue,
+        currentIndex,
+        setCurrentIndex,
+        startValue,
+        setStartValue,
         searchValue,
         setSearchValue,
         onSearch,

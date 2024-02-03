@@ -24,7 +24,7 @@ type Props = {
 };
 
 export const SearchControls = ({ hasQuery }: Props) => {
-  const { filterValue, setFilterValue, searchValue, setSearchValue, onSearch, reset } =
+  const { filterValue, setFilterValue, searchValue, setSearchValue, onSearch, reset , setStartValue, setCurrentIndex } =
     useSearchContext();
   const { searchHeader, filters } = useConfigContext();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -36,6 +36,8 @@ export const SearchControls = ({ hasQuery }: Props) => {
 
   const onSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setStartValue(0);
+    setCurrentIndex(0);
     onSearch({ value: searchValue });
   };
 
@@ -192,11 +194,13 @@ export const SearchControls = ({ hasQuery }: Props) => {
                           <VuiFlexItem key={option.value}>
                             <VuiBadge
                               color={isSelected ? "primary" : "neutral"}
-                              onClick={() =>
+                              onClick={() => {
+                                setStartValue(0);
+                                setCurrentIndex(0);
                                 onSearch({
                                   filter: isSelected ? "" : option.value,
                                 })
-                              }
+                              }}
                             >
                               {option.text}
                             </VuiBadge>

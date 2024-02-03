@@ -56,6 +56,8 @@ export const SearchResult = forwardRef<HTMLDivElement | null, Props>(
             >
               {filters.isEnabled && (
                 <VuiFlexItem>
+                  <div>
+                  <span>Source: </span>
                   <VuiBadge
                     aria-label={`Filter by source ${
                       filters.sourceValueToLabelMap
@@ -63,23 +65,26 @@ export const SearchResult = forwardRef<HTMLDivElement | null, Props>(
                         : source
                     }`}
                     color="neutral"
-                    onClick={() => onSearch({ filter: source })}
+                    onClick={() => onSearch({ filter: source , startValue: 0})}
                   >
                     {filters.sourceValueToLabelMap
                       ? filters.sourceValueToLabelMap[source]
                       : source}
                   </VuiBadge>
+                  </div>
                 </VuiFlexItem>
-              )}
-
+              )} 
               {url && (
-                <VuiFlexItem grow={1}>
+                <div style={{display: 'flex', alignItems: 'end'}}>
+                  <span>URL: </span>
+                  <VuiFlexItem grow={1}>
                   <VuiText size="s" className="searchResultSiteCategory">
                     <p>
                       <VuiTextColor color="subdued">{url}</VuiTextColor>
                     </p>
                   </VuiText>
                 </VuiFlexItem>
+                </div>
               )}
             </VuiFlexContainer>
           )
