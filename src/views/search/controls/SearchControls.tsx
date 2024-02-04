@@ -30,6 +30,7 @@ export const SearchControls = ({ hasQuery }: Props) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
+  const filtering = Boolean(localStorage.getItem('is_current')) || Boolean(localStorage.getItem('is_public')) || Boolean(localStorage.getItem('is_remand'));
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
@@ -211,6 +212,39 @@ export const SearchControls = ({ hasQuery }: Props) => {
                   </VuiFlexItem>
                 </VuiFlexContainer>
               </fieldset>
+
+              <br />
+              {filtering && (
+              <div className="vuiFlexContainer vuiFlexContainer--alignItemsCenter vuiFlexContainer--directionRow vuiFlexContainer--justifyContentStart vuiFlexContainer--spacingXxs">
+                <div className="vuiFlexItem vuiFlexItem--auto vuiFlexItem--alignItemsStretch">
+                  <div className="vuiIcon">
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      strokeWidth={0}
+                      viewBox="0 0 24 24"
+                      className="vuiIcon__inner vuiIcon--subdued"
+                      height={20}
+                      width={20}
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="vuiFlexItem vuiFlexItem--auto vuiFlexItem--alignItemsStretch vuiFlexItem--flexGrowNone">
+                  <div className="vuiText vuiText--s">
+                    <span className="vuiTextColor vuiTextColor--subdued">
+                      <p>Filtering</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              )
+}
+
+             
+             
             </VuiFlexItem>
           )}
 

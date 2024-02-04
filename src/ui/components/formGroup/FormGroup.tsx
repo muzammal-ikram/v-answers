@@ -7,7 +7,7 @@ import { createId } from "../../utils/createId";
 
 type Props = {
   labelFor: string;
-  label: string;
+  label?: string;
   children: React.ReactElement;
   helpText?: React.ReactNode;
   errors?: string[];

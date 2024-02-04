@@ -1,31 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSlider } from "react-icons/bi";
-import { useSearchContext } from "../../../contexts/SearchContext";
 import {
   VuiButtonPrimary,
-  VuiButtonSecondary,
   VuiButtonTertiary,
+  VuiCheckbox,
   VuiDrawer,
   VuiFlexContainer,
   VuiFlexItem,
   VuiFormGroup,
   VuiHorizontalRule,
   VuiIcon,
-  VuiLabel,
   VuiRadioButton,
-  VuiSearchSelect,
   VuiSpacer,
-  VuiText,
-  VuiTextColor,
   VuiTitle,
 } from "../../../ui";
-import { SUMMARY_LANGUAGES, SummaryLanguage, humanizeLanguage } from "../types";
 import { useConfigContext } from "../../../contexts/ConfigurationContext";
-
-const languageOptions = SUMMARY_LANGUAGES.map((code) => ({
-  value: code,
-  label: humanizeLanguage(code),
-}));
 
 type Props = {
   isOpen: boolean;
@@ -34,11 +23,68 @@ type Props = {
 
 export const OptionsDrawer = ({ isOpen, onClose }: Props) => {
   const { uxMode, setUxMode } = useConfigContext();
-  const { language, onSearch } = useSearchContext();
+
+  const [isCurrentChecked, setIsCurrentChecked] = useState(localStorage.getItem('is_current') === "true" ? true : localStorage.getItem('is_current') === "false" ? true : false);
+  const [currentValue, setCurrentValue] = useState(localStorage.getItem('is_current') === "true" ? true : false);
+  const [isPublicChecked, setIsPublicChecked] = useState(localStorage.getItem('is_public') === "true" ? true : localStorage.getItem('is_public') === "false" ? true : false);
+  const [publicValue, setPublicValue] = useState(localStorage.getItem('is_public') === "true" ? true : false);
+  const [isRemandChecked, setIsRemandChecked] = useState(localStorage.getItem('is_remand') === "true" ? true : localStorage.getItem('is_remand') === "false" ? true : false);
+  const [remandValue, setRemandValue] = useState(localStorage.getItem('is_remand') === "true" ? true : false);
+  // const [isSourceChecked, setIsSourceChecked] = useState(localStorage.getItem('source') ? true : false);
+  // const [source, setSource] = useState(localStorage.getItem('source') ?? "");
 
   const [newUxMode, setNewUxMode] = useState(uxMode);
-  const [isLanguageMenuOpen, seIisLanguageMenuOpen] = useState(false);
-  const [newLanguage, setNewLanguage] = useState<SummaryLanguage>(language);
+
+  useEffect(() => {
+      if (isCurrentChecked === true) {
+        localStorage.setItem('is_current', JSON.stringify(currentValue));
+      } else if (isCurrentChecked === false) {
+        localStorage.removeItem('is_current');
+      } else {
+        localStorage.setItem('is_current', JSON.stringify(currentValue));
+      } 
+    
+  }, [isCurrentChecked, currentValue]);
+
+  useEffect(() => {
+    if (isPublicChecked === true) {
+      localStorage.setItem('is_public', JSON.stringify(publicValue));
+    } else if (isPublicChecked === false) {
+      localStorage.removeItem('is_public');
+    } else {
+      localStorage.setItem('is_public', JSON.stringify(publicValue));
+    }
+  }, [isPublicChecked, publicValue]);
+
+  useEffect(() => {
+    if (isRemandChecked === true) {
+      localStorage.setItem('is_remand', JSON.stringify(remandValue));
+    } else if (isRemandChecked === false) {
+      localStorage.removeItem('is_remand');
+    } else {
+      localStorage.setItem('is_remand', JSON.stringify(remandValue));
+    }
+  }, [isRemandChecked, remandValue]);
+
+  // useEffect(() => {
+  //   if (isSourceChecked === true && source) {
+  //     localStorage.setItem('source', source);
+  //   } else if (isSourceChecked === false) {
+  //     localStorage.removeItem('source');
+  //   } 
+  // }, [isSourceChecked, source]);
+
+  const handleCurrentValue = () => {
+    setCurrentValue(!currentValue);
+  }
+
+  const handlePublicValue = () => {
+    setPublicValue(!publicValue);
+  }
+
+  const handleRemandValue = () => {
+    setRemandValue(!remandValue);
+  }
 
   return (
     <VuiDrawer
@@ -64,32 +110,6 @@ export const OptionsDrawer = ({ isOpen, onClose }: Props) => {
         </VuiFlexContainer>
       }
     >
-      <VuiLabel>Summary language</VuiLabel>
-
-      <VuiSpacer size="xs" />
-
-      <VuiText size="xs">
-        <VuiTextColor color="subdued">
-          <p>Summaries will be written in this language.</p>
-        </VuiTextColor>
-      </VuiText>
-
-      <VuiSpacer size="xs" />
-
-      <VuiSearchSelect
-        isOpen={isLanguageMenuOpen}
-        setIsOpen={seIisLanguageMenuOpen}
-        onSelect={(value: string[]) => {
-          setNewLanguage(value[0] as SummaryLanguage);
-        }}
-        selected={[newLanguage]}
-        options={languageOptions}
-        isMultiSelect={false}
-      >
-        <VuiButtonSecondary color="neutral" size="m">
-          {humanizeLanguage(newLanguage)}
-        </VuiButtonSecondary>
-      </VuiSearchSelect>
 
       <VuiSpacer size="m" />
 
@@ -121,6 +141,109 @@ export const OptionsDrawer = ({ isOpen, onClose }: Props) => {
 
       <VuiHorizontalRule />
 
+      <VuiFormGroup labelFor={"is_current"} label="is_current">
+        <>
+              <VuiCheckbox
+                label="is_current"
+                checked={isCurrentChecked}
+                onChange={() => setIsCurrentChecked(() => {
+                  return !isCurrentChecked
+                })}
+              />
+              <VuiRadioButton
+              disabled={!isCurrentChecked}
+                groupName="is_current"
+                label="True"
+                checked={currentValue}
+                onChange={handleCurrentValue}
+              />
+              <VuiRadioButton
+              disabled={!isCurrentChecked}
+                groupName="is_current"
+                label="False"
+                checked={!currentValue}
+                onChange={handleCurrentValue}
+              />
+        </>
+      </VuiFormGroup>
+      
+      <VuiSpacer size="l" />
+      <VuiHorizontalRule />
+
+      <VuiFormGroup labelFor={"is_public"} label={"is_public"}>
+        <>
+          <VuiCheckbox
+            label="is_public"
+            checked={isPublicChecked}
+            onChange={() => setIsPublicChecked(!isPublicChecked)}
+          />
+
+          <VuiRadioButton
+            disabled={!isPublicChecked}
+            groupName="is_public"
+            label="True"
+            checked={publicValue}
+            onChange={handlePublicValue}
+          />
+
+          <VuiRadioButton
+            disabled={!isPublicChecked}
+            groupName="is_public"
+            label="False"
+            checked={!publicValue}
+            onChange={handlePublicValue}
+          />
+        </>
+      </VuiFormGroup>
+      <VuiSpacer size="l" />
+      <VuiHorizontalRule />
+
+      <VuiFormGroup labelFor={"is_remand"} label={"is_remand"}>
+        <>
+          <VuiCheckbox
+            label="is_remand"
+            checked={isRemandChecked}
+            onChange={() => setIsRemandChecked(!isRemandChecked)}
+          />
+
+          <VuiRadioButton
+            disabled={!isRemandChecked}
+            groupName="is_remand"
+            label="True"
+            checked={remandValue}
+            onChange={handleRemandValue}
+          />
+
+          <VuiRadioButton
+            disabled={!isRemandChecked}
+            groupName="is_remand"
+            label="False"
+            checked={!remandValue}
+            onChange={handleRemandValue}
+          />
+        </>
+      </VuiFormGroup>
+      <VuiSpacer size="l" />
+      <VuiHorizontalRule />
+
+
+      {/* <VuiFormGroup labelFor={"source"} label={"source"}>
+        <>
+        <VuiCheckbox
+            label="source"
+            checked={isSourceChecked}
+            onChange={() => setIsSourceChecked(!isSourceChecked)}
+          />
+          <input
+            id="sourceInput"
+            type="text"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            disabled={!isSourceChecked}
+          />
+        </>
+      </VuiFormGroup>
+       */}
       <VuiSpacer size="m" />
 
       <VuiFlexContainer justifyContent="spaceBetween" alignItems="center">
@@ -134,12 +257,6 @@ export const OptionsDrawer = ({ isOpen, onClose }: Props) => {
           <VuiButtonPrimary
             color="primary"
             onClick={() => {
-              if (newLanguage !== language) {
-                onSearch({
-                  language: newLanguage as SummaryLanguage,
-                });
-              }
-
               setUxMode(newUxMode);
               onClose();
             }}

@@ -50,13 +50,35 @@ export const sendSearchRequest = async ({
       ? hybridLambdaLong
       : hybridLambdaShort;
   const corpusKeyList = corpusId.split(",").map((id) => {
+    let metadataFilter = "";
+    if (filter) {
+      metadataFilter += `doc.source = '${filter}'`;
+    }
+    if (localStorage.getItem("is_remand") === "true" || localStorage.getItem("is_remand") === "false") {
+      if (metadataFilter) {
+        metadataFilter += " AND ";
+      }
+      metadataFilter += `(part.is_remand = ${localStorage.getItem("is_remand")})`;
+    }
+    if (localStorage.getItem("is_current") === "true" || localStorage.getItem("is_current") === "false") {
+      if (metadataFilter) {
+        metadataFilter += " AND ";
+      }
+      metadataFilter += `(doc.is_current = ${localStorage.getItem("is_current")})`;
+    }
+    if (localStorage.getItem("is_public") === "true" || localStorage.getItem("is_public") === "false") {
+      if (metadataFilter) {
+        metadataFilter += " AND ";
+      }
+      metadataFilter += `(doc.is_public = ${localStorage.getItem("is_public")})`;
+    }
     return {
       customerId,
       corpusId: id,
       lexicalInterpolationConfig: {
         lambda: lambda,
       },
-      metadataFilter: filter ? `doc.source = '${filter}'` : undefined,
+      metadataFilter,
     };
   });
 
