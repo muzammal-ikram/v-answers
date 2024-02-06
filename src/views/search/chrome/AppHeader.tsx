@@ -28,12 +28,11 @@ export const AppHeader = () => {
           link. */}
               {/* eslint-disable-next-line react/jsx-no-target-blank */}
               <a
-                href={appHeader.logo.link ?? "https://vectara.com/"}
                 target="_blank"
                 className="appHeaderLogo"
               >
                 <img
-                  src={appHeader.logo.src ?? "images/vectara_logo.png"}
+                  src={appHeader.logo.src ?? "images/casescribe.png"}
                   alt={appHeader.logo.alt ?? "Vectara logo"}
                   height={appHeader.logo.height ?? "20"}
                   style={{ marginTop: "1px" }}

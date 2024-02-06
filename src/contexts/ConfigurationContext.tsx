@@ -295,6 +295,16 @@ export const ConfigContextProvider = ({ children }: Props) => {
     summaryEnableHem: false,
   });
 
+  const sourceValue = (source : string) => {
+    if(source === "uscourts"){
+      return "USCAVC";
+    }
+    if(source === "bva"){
+      return "BVA";
+    };
+    return "";
+  }
+
   useEffect(() => {
     const loadConfig = async () => {
       let config: Config;
@@ -432,14 +442,15 @@ export const ConfigContextProvider = ({ children }: Props) => {
       const allSources =
         config_all_sources === undefined ? true : isTrue(config_all_sources);
 
+      
       const sources =
         config_sources?.split(",").map((source) => ({
-          value: source.toLowerCase(),
+          value: sourceValue(source.toLowerCase()),
           label: source,
         })) ?? [];
 
       const sourceValueToLabelMap = sources.length
-        ? sources.reduce((accum, { label, value }) => {
+        ? sources.reduce((accum, { label, value} : any) => {
             accum[value] = label;
             return accum;
           }, {} as Record<string, string>)
