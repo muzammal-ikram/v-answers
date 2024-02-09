@@ -36,9 +36,9 @@ export const AuthenticationContextProvider = ({ children }: Props) => {
   const { auth } = useConfigContext();
   const [user, setUser] = useState<User>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+ 
   const logIn = (authToken: string | undefined | null) => {
-    if (!authToken) {
+    if (!authToken) { 
       return;
     }
 

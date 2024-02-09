@@ -41,9 +41,10 @@ export const LoggedOutView = () => {
       <VuiFlexItem>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
+            console.log(credentialResponse , '@credentialResponse');
             logIn(credentialResponse.credential);
           }}
-          onError={() => {
+          onError={() => { 
             console.error("Login Failed");
           }}
         />
