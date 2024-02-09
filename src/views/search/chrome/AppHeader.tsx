@@ -33,7 +33,7 @@ export const AppHeader = () => {
               >
                 <img
                   src={appHeader.logo.src ?? "images/casescribe.png"}
-                  alt={appHeader.logo.alt ?? "Vectara logo"}
+                  alt={appHeader.logo.alt ?? "VA Research Bot logo"}
                   height={appHeader.logo.height ?? "20"}
                   style={{ marginTop: "1px" }}
                 />
@@ -43,7 +43,7 @@ export const AppHeader = () => {
             <VuiFlexItem grow={1}>
               <VuiTitle size="xs" align="left">
                 <VuiTextColor color="subdued">
-                  <h1>{app.title ?? "Sample app"}</h1>
+                  <h1>{app.title ?? "VA Research Bot App"}</h1>
                 </VuiTextColor>
               </VuiTitle>
             </VuiFlexItem>
@@ -88,21 +88,6 @@ export const AppHeader = () => {
             )}
 
             <VuiFlexItem>
-              {/* <VuiButtonPrimary
-                color="primary"
-                size="m"
-                href="https://console.vectara.com/"
-                target="_blank"
-                onClick={() => {
-                  ReactGA.event({
-                    category: "Outbound link",
-                    action: "click",
-                    label: "Try Vectara",
-                  });
-                }}
-              >
-                Try Vectara now
-              </VuiButtonPrimary> */}
             </VuiFlexItem>
           </VuiFlexContainer>
         </VuiFlexItem>

@@ -298,7 +298,7 @@ export const ConfigContextProvider = ({ children }: Props) => {
   const sourceValue = (source : string) => {
     if(source === "uscourts"){
       return "USCAVC";
-    }
+    } 
     if(source === "bva"){
       return "BVA";
     };
