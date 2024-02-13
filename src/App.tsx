@@ -1,83 +1,67 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import ReactGA from "react-ga4";
-import Analytics from "analytics";
-import googleTagManager from "@analytics/google-tag-manager";
+import { 
+  createBrowserRouter,
+  RouterProvider,
+  Navigate} from "react-router-dom";
 import { SearchView } from "./views/search/SearchView";
-import { LoggedOutView } from "./views/loggedOut/LoggedOutView";
-import { useConfigContext } from "./contexts/ConfigurationContext";
 import { SearchContextProvider } from "./contexts/SearchContext";
 import {
   AuthenticationContextProvider,
-  useAuthenticationContext,
 } from "./contexts/AuthenticationContext";
 import { ConfigContextProvider } from "./contexts/ConfigurationContext";
-import * as FullStory from "@fullstory/browser";
 import "./App.scss";
+import { LandingPageView } from "./views/landingPage/landingPage";
+import { LoggedOutView } from "./views/loggedOut/LoggedOutView";
 
-const AppRoutes = () => {
-  const { isConfigLoaded, missingConfigProps, app, analytics } =
-    useConfigContext();
-
-  const { isAuthEnabled, isAuthenticated, logIn } = useAuthenticationContext();
-
-  useEffect(() => {
-    if (isAuthEnabled) {
-      const authToken = localStorage.getItem("AuthToken");
-      logIn(authToken);
-    }
-
-    if (analytics.googleAnalyticsTrackingCode) {
-      ReactGA.initialize(analytics.googleAnalyticsTrackingCode);
-    }
-
-    if (analytics.gtmContainerId) {
-      Analytics({
-        plugins: [
-          googleTagManager({
-            containerId: analytics.gtmContainerId,
-          }),
-        ],
-      });
-    }
-
-    if (analytics.fullStoryOrgId) {
-      FullStory.init({
-        orgId: analytics.fullStoryOrgId,
-        devMode: process.env.NODE_ENV !== "production",
-      });
-    }
-
-    if (app.title) document.title = app.title;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConfigLoaded]);
-
-  if (missingConfigProps.length) {
-    return (
-      <div>
-        These environment variables are missing: {missingConfigProps.join(", ")}
-        . They need to be defined for the app to function.
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <LoggedOutView />;
-  }
-
-  return (
-    <Router>
-      <SearchContextProvider>
-        <SearchView />
-      </SearchContextProvider>
-    </Router>
-  );
+const isAuthenticated = () => {
+  return !!localStorage.getItem('AuthToken');
 };
 
+const RequireAuth = ({children}: any) => {
+  if (isAuthenticated()) {
+    return children;
+  }
+
+  return <Navigate to="/signin" replace />;
+};
+
+const PublicOnlyRoute = ({ children }: any) => {
+  if (isAuthenticated()) {
+    return <Navigate to="/search" replace />;
+  }
+
+  return children;
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPageView />,
+  },
+  {
+    path: "/signin",
+    element: (
+            <PublicOnlyRoute>
+              <LoggedOutView />
+            </PublicOnlyRoute>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <RequireAuth>
+        <SearchContextProvider>
+          <SearchView />
+        </SearchContextProvider>
+      </RequireAuth>
+    ),
+  }
+]);
+
+ 
 export const App = () => (
   <ConfigContextProvider>
     <AuthenticationContextProvider>
-      <AppRoutes />
+      <RouterProvider router={router} />
     </AuthenticationContextProvider>
   </ConfigContextProvider>
 );

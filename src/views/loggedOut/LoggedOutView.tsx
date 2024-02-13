@@ -3,10 +3,12 @@ import { useAuthenticationContext } from "../../contexts/AuthenticationContext";
 import { VuiFlexContainer, VuiFlexItem, VuiText, VuiTextColor, VuiTitle } from "../../ui";
 import "./loggedOutView.scss";
 import { useConfigContext } from "../../contexts/ConfigurationContext";
+import { useNavigate } from "react-router";
 
 export const LoggedOutView = () => {
   const { searchHeader } = useConfigContext();
   const { logIn } = useAuthenticationContext();
+  const navigate = useNavigate();
 
   return (
     <VuiFlexContainer
@@ -34,7 +36,7 @@ export const LoggedOutView = () => {
 
       <VuiFlexItem>
         <VuiText align="center">
-          <VuiTextColor color="subdued">Log in with Google</VuiTextColor>
+          <VuiTextColor color="subdued">Join us with Google</VuiTextColor>
         </VuiText>
       </VuiFlexItem>
 
@@ -43,6 +45,7 @@ export const LoggedOutView = () => {
           onSuccess={(credentialResponse) => {
             console.log(credentialResponse , '@credentialResponse');
             logIn(credentialResponse.credential);
+            navigate("/search");
           }}
           onError={() => { 
             console.error("Login Failed");

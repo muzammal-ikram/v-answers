@@ -11,10 +11,12 @@ import {
   // VuiButtonPrimary,
 } from "../../../ui";
 import "./appHeader.scss";
+import { useNavigate } from "react-router";
 
 export const AppHeader = () => {
   const { app, appHeader } = useConfigContext();
 
+  const navigate = useNavigate();
   const { isAuthEnabled, logOut, user } = useAuthenticationContext();
 
   return (
@@ -60,7 +62,10 @@ export const AppHeader = () => {
                   </VuiText>
                 </VuiFlexItem>
                 <VuiFlexItem>
-                  <VuiButtonTertiary color="neutral" size="m" onClick={logOut}>
+                  <VuiButtonTertiary color="neutral" size="m" onClick={() => {
+                    logOut();
+                    navigate('/signin')
+                  }}>
                     Log out
                   </VuiButtonTertiary>
                 </VuiFlexItem>
