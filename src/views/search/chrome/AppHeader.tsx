@@ -29,10 +29,7 @@ export const AppHeader = () => {
           this would add the rel="noopener noreferrer" attribute to the
           link. */}
               {/* eslint-disable-next-line react/jsx-no-target-blank */}
-              <a
-                target="_blank"
-                className="appHeaderLogo"
-              >
+              <a className="appHeaderLogo" rel="noreferrer">
                 <img
                   src={appHeader.logo.src ?? "images/casescribe.png"}
                   alt={appHeader.logo.alt ?? "VA Research Bot logo"}
