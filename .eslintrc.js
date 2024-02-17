@@ -3,7 +3,7 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     plugins: ["@typescript-eslint"],
     root: true,
-    ignorePatterns: ["public/", "build/", "src/ui"],
+    ignorePatterns: ["public/", "build/", "src"],
     rules: {
         "@typescript-eslint/no-unused-vars": "error",
         "react/no-unused-prop-types": 2
