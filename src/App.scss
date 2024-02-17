@@ -1,3 +1,4 @@
+
 @import "./ui/index";
 
 body {
@@ -9,4 +10,14 @@ body {
 .grecaptcha-badge,
 .grecaptcha-badge * {
   display: none !important;
+}
+
+.ant-layout-header{
+  background: unset;
+  padding: 0;
+
+}
+
+.btn_margin{
+  margin-top: 0.75rem !important;
 }

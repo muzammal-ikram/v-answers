@@ -54,7 +54,7 @@ interface Config {
   // Auth
   config_authenticate?: string;
   config_google_client_id?: string;
-
+  config_admins?: string;
   // Analytics
   config_google_analytics_tracking_code?: string;
   config_full_story_org_id?: string;
@@ -175,6 +175,7 @@ interface ConfigContextType {
   exampleQuestions: ExampleQuestions;
   auth: Auth;
   analytics: Analytics;
+  admins: Array<string>;
 }
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
@@ -268,6 +269,7 @@ export const ConfigContextProvider = ({ children }: Props) => {
     allSources: true,
     sourceValueToLabelMap: {},
   });
+  const [admins , setAdmins] = useState<Array<string>>([]);
   const [searchHeader, setSearchHeader] = useState<SearchHeader>({ logo: {} });
   const [exampleQuestions, setExampleQuestions] = useState<ExampleQuestions>(
     []
@@ -361,6 +363,7 @@ export const ConfigContextProvider = ({ children }: Props) => {
         config_enable_source_filters,
         config_all_sources,
         config_sources,
+        config_admins,
 
         // App header
         config_app_header_logo_link,
@@ -409,7 +412,7 @@ export const ConfigContextProvider = ({ children }: Props) => {
         config_summary_prompt_name,
         config_summary_enable_hem,
       } = config;
-
+      
       setUxMode(config_ux ?? "summary");
 
       setSearch({
@@ -448,6 +451,9 @@ export const ConfigContextProvider = ({ children }: Props) => {
           value: sourceValue(source.toLowerCase()),
           label: source,
         })) ?? [];
+
+      const allAdmins = config_admins?.split(",").map((admin : string) => (admin)) ?? [];
+      setAdmins(allAdmins);
 
       const sourceValueToLabelMap = sources.length
         ? sources.reduce((accum, { label, value} : any) => {
@@ -533,6 +539,7 @@ export const ConfigContextProvider = ({ children }: Props) => {
         setUxMode,
         search,
         app,
+        admins,
         appHeader,
         filters,
         summary,
