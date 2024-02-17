@@ -8,12 +8,13 @@ import {
 import { SearchControls } from "./controls/SearchControls";
 import { ExampleQuestions } from "./controls/ExampleQuestions";
 import { useSearchContext } from "../../contexts/SearchContext";
-import { AppHeader } from "./chrome/AppHeader";
+// import { AppHeader } from "./chrome/AppHeader";
 // import { AppFooter } from "./chrome/AppFooter";
 import { useConfigContext } from "../../contexts/ConfigurationContext";
 import { SearchUx } from "./SearchUx";
 import { SummaryUx } from "./SummaryUx";
 import "./searchView.scss";
+import AdminHeader from "../../components/Header";
 
 const uxModeToComponentMap = {
   search: <SearchUx />,
@@ -21,7 +22,7 @@ const uxModeToComponentMap = {
 } as const;
 
 export const SearchView = () => {
-  const { isConfigLoaded, app, uxMode } = useConfigContext();
+  const { isConfigLoaded, uxMode } = useConfigContext();
 
   const {
     isSearching,
@@ -64,7 +65,8 @@ export const SearchView = () => {
 
   return (
     <>
-      {app.isHeaderEnabled && <AppHeader />}
+      {/* <AppHeader /> */}
+      <AdminHeader />
       <VuiFlexContainer
         className="searchView"
         direction="column"

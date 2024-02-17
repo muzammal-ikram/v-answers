@@ -12,13 +12,13 @@ import {
 } from "../../../ui";
 import "./appHeader.scss";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export const AppHeader = () => {
   const { app, appHeader } = useConfigContext();
 
   const navigate = useNavigate();
   const { isAuthEnabled, logOut, user } = useAuthenticationContext();
-
   return (
     <div className="appHeader">
       <VuiFlexContainer justifyContent="spaceBetween" alignItems="center">
@@ -58,6 +58,18 @@ export const AppHeader = () => {
                     <p>Logged in as {user?.email}</p>
                   </VuiText>
                 </VuiFlexItem>
+                <div className="vuiFlexItem vuiFlexItem--auto vuiFlexItem--alignItemsStretch">
+                  <Link
+                  to={"/dashboard"}
+                    className="vuiBaseButton fs-mask vuiButtonSecondary vuiButtonSecondary--primary vuiBaseButton--m vuiBaseButton--alignCenter vuiBaseButton--left"
+                    type="button"
+                    data-testid="accountMenuButton"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+
                 <VuiFlexItem>
                   <VuiButtonTertiary color="neutral" size="m" onClick={() => {
                     logOut();

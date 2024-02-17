@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 export const LoggedOutView = () => {
   const { searchHeader } = useConfigContext();
-  const { logIn } = useAuthenticationContext();
+  const { logIn, saveLoggedInInformation } = useAuthenticationContext();
   const navigate = useNavigate();
 
   return (
@@ -40,12 +40,14 @@ export const LoggedOutView = () => {
         </VuiText>
       </VuiFlexItem>
 
+      <h1>Loggin here</h1>
       <VuiFlexItem>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             console.log(credentialResponse , '@credentialResponse');
             logIn(credentialResponse.credential);
             navigate("/search");
+            saveLoggedInInformation(credentialResponse.credential);
           }}
           onError={() => { 
             console.error("Login Failed");

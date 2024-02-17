@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
 import { useConfigContext } from "./ConfigurationContext";
+import { sendLoggedInRequest, sendLoggedOutRequest } from "./apiRequests";
 
 type User = { email: string };
 
@@ -10,6 +11,9 @@ interface AuthenticationContextType {
   isAuthenticated: boolean;
   logIn: (authToken: string | undefined | null) => void;
   logOut: () => void;
+  parseJwt: (token: string) => any;
+  saveLoggedInInformation: (loggedInResponse : any) => void;
+  loggedOutInformation: (authToken : any) => void
 }
 
 const AuthenticationContext = createContext<AuthenticationContextType | undefined>(undefined);
@@ -18,7 +22,7 @@ type Props = {
   children: ReactNode;
 };
 
-const parseJwt = (token: string) => {
+export const parseJwt = (token: string) => {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   const jsonPayload = decodeURIComponent(
@@ -42,6 +46,7 @@ export const AuthenticationContextProvider = ({ children }: Props) => {
       return;
     }
 
+
     const user = {
       email: parseJwt(authToken).email
     };
@@ -49,6 +54,23 @@ export const AuthenticationContextProvider = ({ children }: Props) => {
     setUser(user);
     setIsAuthenticated(true);
     localStorage.setItem("AuthToken", authToken);
+  };
+
+  const saveLoggedInInformation = async (authToken: string | undefined | null) => {
+      if (!authToken) { 
+        return;
+      }
+
+      const parseJwtData = parseJwt(authToken);
+      const data = {authToken , ...parseJwtData};
+      await sendLoggedInRequest(data);
+  };
+
+  const loggedOutInformation = async (authToken: string | undefined | null) => {
+      if (!authToken) { 
+        return;
+      }
+      await sendLoggedOutRequest(authToken);
   };
 
   const logOut = () => {
@@ -73,7 +95,10 @@ export const AuthenticationContextProvider = ({ children }: Props) => {
         user,
         isAuthenticated: isAuthEnabled ? isAuthenticated : true,
         logIn,
-        logOut
+        logOut,
+        parseJwt,
+        saveLoggedInInformation,
+        loggedOutInformation
       }}
     >
       <GoogleOAuthProvider clientId={auth.googleClientId ?? ""}>{children}</GoogleOAuthProvider>
